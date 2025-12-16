@@ -10,27 +10,14 @@ public class Snake {
         this.body = new ArrayDeque<>();
         this.currentDirection = dir;
         this.growthPending = 0;
-        int dx, dy;
-        switch(dir){
-            case UP -> { dx = 0; dy = -1; }
-            case DOWN -> { dx = 0; dy = 1; }
-            case LEFT -> { dx = -1; dy = 0; }
-            case RIGHT -> { dx = 1; dy = 0; }
-            default -> throw new IllegalArgumentException("Invalid direction");
-        }
         for (int i = 0; i < initialLength; i++) {
-            body.addLast(new Point(start.x - i * dx, start.y - i * dy));
+            body.addLast(new Point(start.x - i * dir.dx, start.y - i * dir.dy));
         }
     }
     private Point nextHead() {
         Point head = body.peekFirst();
         Point newHead = new Point(head);
-        switch (currentDirection) {
-            case UP -> newHead.y -= 1;
-            case DOWN -> newHead.y += 1;
-            case LEFT -> newHead.x -= 1;
-            case RIGHT -> newHead.x += 1;
-        }
+        
         return newHead;
     }
     public void move() {
@@ -42,14 +29,8 @@ public class Snake {
             body.removeLast();
         }
     }
-    private boolean isOpposite(Direction dir1, Direction dir2) {
-        return (dir1 == Direction.UP && dir2 == Direction.DOWN) ||
-               (dir1 == Direction.DOWN && dir2 == Direction.UP) ||
-               (dir1 == Direction.LEFT && dir2 == Direction.RIGHT) ||
-               (dir1 == Direction.RIGHT && dir2 == Direction.LEFT);
-    }
     public void changeDirection(Direction newDir) {
-        if (newDir != null && !isOpposite(currentDirection, newDir)) {
+        if (newDir != null && !currentDirection.isOpposite(newDir)) {
             currentDirection = newDir;
         }
     }
