@@ -10,8 +10,16 @@ public class Snake {
         this.body = new ArrayDeque<>();
         this.currentDirection = dir;
         this.growthPending = 0;
+        int dx, dy;
+        switch(dir){
+            case UP -> { dx = 0; dy = -1; }
+            case DOWN -> { dx = 0; dy = 1; }
+            case LEFT -> { dx = -1; dy = 0; }
+            case RIGHT -> { dx = 1; dy = 0; }
+            default -> throw new IllegalArgumentException("Invalid direction");
+        }
         for (int i = 0; i < initialLength; i++) {
-            body.addLast(new Point(start.x, start.y - i));
+            body.addLast(new Point(start.x - i * dx, start.y - i * dy));
         }
     }
     private Point nextHead() {
