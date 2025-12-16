@@ -1,7 +1,9 @@
 import java.util.Set;
 import java.awt.Point;
 import java.util.Random;
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 
 public class World {
     private final int width;
@@ -26,27 +28,27 @@ public class World {
         return isObstacle(p) || snake.iscontains(p);
     }
 
-    //Blank point generator
-    public Point randomEmptyPoint(Snake snake){
-        int freecount = width * height - obstacles.size() - snake.getLength();
-        if(freecount <= 0) {
-            return null; //You win!
-        }
+    public List<Point> getEmptyPoints(
+        Snake snake,
+        int minX, int minY,
+        int maxX, int maxY
+    ){
+        List<Point> result = new ArrayList<>();
 
-        int index = random.nextInt(freecount);
+        minX = Math.max(0, minX);
+        minY = Math.max(0, minY);
+        maxX = Math.min(width - 1, maxX);
+        maxY = Math.min(height - 1, maxY);
 
-        for(int x = 0; x < width; x++) {
-            for(int y = 0; y < height; y++) {
+        for (int x = minX; x <= maxX; x++) {
+            for (int y = minY; y <= maxY; y++) {
                 Point p = new Point(x, y);
-                if(!isOccupied(p, snake)) {
-                    if(index == 0) {
-                        return p;
-                    }
-                    index--;
+                if (!isOccupied(p, snake)) {
+                    result.add(p);
                 }
             }
         }
-        return null; //You will never win
+        return result;
     }
 
     //Adding obstacles

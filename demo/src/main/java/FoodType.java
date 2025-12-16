@@ -24,6 +24,5 @@ public enum FoodType {
         }
     };
 
-
     public abstract int scoreForCombo(int combo);
 }
