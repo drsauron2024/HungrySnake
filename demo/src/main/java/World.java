@@ -1,38 +1,52 @@
-import java.util.Set;
 import java.awt.Point;
-import java.util.Random;
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
+import java.util.Random;
 
 public class World {
+
     private final int width;
     private final int height;
-    private final Set<Point> obstacles;
+
+    private Snake snake;
+    private Food food;
+    private Obstacles obstacles;
+
     private final Random random = new Random();
 
     public World(int width, int height) {
         this.width = width;
         this.height = height;
-        this.obstacles = new HashSet<>();
     }
 
-    //Foundational judger method to check if a point is within bounds
-    public boolean inBounds(Point p){
-        return p.x >= 0 && p.x < width && p.y >= 0 && p.y < height;
+    public boolean inBounds(Point p) {
+        return p.x >= 0 && p.x < width &&
+               p.y >= 0 && p.y < height;
     }
-    public boolean isObstacle(Point p) {
-        return obstacles.contains(p);
+
+    public boolean isOccupied(Point p) {
+        if (!inBounds(p)) return true;
+
+        if (snake != null && snake.iscontains(p)) {
+            return true;
+        }
+        if (food != null && food.getPosition().equals(p)) {
+            return true;
+        }
+        if (obstacles != null && obstacles.getAllCells().contains(p)) {
+            return true;
+        }
+        return false;
     }
-    public boolean isOccupied(Point p, Snake snake) {
-        return isObstacle(p) || snake.iscontains(p);
+
+    public boolean isEmpty(Point p) {
+        return inBounds(p) && !isOccupied(p);
     }
 
     public List<Point> getEmptyPoints(
-        Snake snake,
-        int minX, int minY,
-        int maxX, int maxY
-    ){
+            int minX, int minY,
+            int maxX, int maxY
+    ) {
         List<Point> result = new ArrayList<>();
 
         minX = Math.max(0, minX);
@@ -43,7 +57,7 @@ public class World {
         for (int x = minX; x <= maxX; x++) {
             for (int y = minY; y <= maxY; y++) {
                 Point p = new Point(x, y);
-                if (!isOccupied(p, snake)) {
+                if (isEmpty(p)) {
                     result.add(p);
                 }
             }
@@ -51,14 +65,27 @@ public class World {
         return result;
     }
 
-    //Adding obstacles
-    public void addObstacle(Point p) {
-        if (inBounds(p)) {
-            obstacles.add(p);
-        }
+    public void setSnake(Snake snake) {
+        this.snake = snake;
     }
 
-    public Set<Point> getObstacles() {
+    public void setFood(Food food) {
+        this.food = food;
+    }
+
+    public void setObstacles(Obstacles obstacles) {
+        this.obstacles = obstacles;
+    }
+
+    public Snake getSnake() {
+        return snake;
+    }
+
+    public Food getFood() {
+        return food;
+    }
+
+    public Obstacles getObstacles() {
         return obstacles;
     }
 

@@ -26,7 +26,7 @@ public class FoodSpawner {
     int maxY = head.y + minDistance;
 
     List<Point> candidates = world.getEmptyPoints(
-        snake, minX, minY, maxX, maxY
+        minX, minY, maxX, maxY
     );
 
     if (!candidates.isEmpty()) {
@@ -34,7 +34,7 @@ public class FoodSpawner {
     }
 
     List<Point> all = world.getEmptyPoints(
-        snake, 0, 0,
+        0, 0,
         world.getWidth() - 1,
         world.getHeight() - 1
     );
