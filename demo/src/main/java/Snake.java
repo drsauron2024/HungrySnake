@@ -49,7 +49,7 @@ public class Snake {
                (dir1 == Direction.RIGHT && dir2 == Direction.LEFT);
     }
     public void changeDirection(Direction newDir) {
-        if (!isOpposite(currentDirection, newDir)) {
+        if (newDir != null && !isOpposite(currentDirection, newDir)) {
             currentDirection = newDir;
         }
     }
