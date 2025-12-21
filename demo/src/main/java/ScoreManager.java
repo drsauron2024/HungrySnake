@@ -20,7 +20,7 @@ public class ScoreManager {
     public int getCombo() {
         return combo;
     }
-
+    //ff
     public int getHighestCombo() {
         return highestCombo;
     }
