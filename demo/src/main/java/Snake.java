@@ -1,6 +1,6 @@
-import java.util.Deque;
 import java.awt.Point;
 import java.util.ArrayDeque;
+import java.util.Deque;
 
 public class Snake {
     private Deque<Point> body;
@@ -51,6 +51,9 @@ public class Snake {
     public boolean iscontains(Point p) {
         return body.contains(p);
     }
+    public boolean contains(Point p) {
+        return body.contains(p);
+    }   
     public int getLength() {
         return body.size();
     }
