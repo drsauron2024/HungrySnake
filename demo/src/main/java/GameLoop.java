@@ -15,8 +15,8 @@ public class GameLoop {
     
     private long lastFoodRefreshTime = 0;
     private long lastMapRefreshTime = 0;
-    private final long FOOD_REFRESH_INTERVAL = 5000; // 5秒
-    private final long MAP_REFRESH_INTERVAL = 10000; // 10秒
+    private final long FOOD_REFRESH_INTERVAL = 10000; // 10秒（原5秒）
+    private final long MAP_REFRESH_INTERVAL = 20000; // 20秒（原10秒）
     
     public GameLoop(World world, RuleEngine ruleEngine, ScoreManager scoreManager, 
                     FoodSpawner foodSpawner) {
@@ -53,10 +53,10 @@ public class GameLoop {
             return false;
         }
         
-        // 1. 检查是否需要刷新食物（每5秒）
+        // 1. 检查是否需要刷新食物（每10秒）
         checkFoodRefresh();
         
-        // 2. 检查是否需要刷新地图（每10秒）
+        // 2. 检查是否需要刷新地图（每20秒）
         checkMapRefresh();
         
         // 3. 蛇移动（方向已在外部设置）
@@ -71,7 +71,7 @@ public class GameLoop {
     }
     
     /**
-     * 检查并刷新食物（每5秒）
+     * 检查并刷新食物（每10秒）
      */
     private void checkFoodRefresh() {
         long currentTime = System.currentTimeMillis();
@@ -92,7 +92,7 @@ public class GameLoop {
     }
     
     /**
-     * 检查并刷新地图（每10秒）
+     * 检查并刷新地图（每20秒）
      */
     private void checkMapRefresh() {
         long currentTime = System.currentTimeMillis();

@@ -40,13 +40,13 @@ public class Main {
 
         // 6. 启动游戏
         System.out.println("\n游戏开始！");
-        System.out.println("- 蛇每秒自动前进一格");
+        System.out.println("- 蛇每2秒自动前进一格");
         System.out.println("- 按A/D键可以让蛇左转/右转");
-        System.out.println("- 每5秒刷新食物，每10秒刷新地图");
+        System.out.println("- 每10秒刷新食物，每20秒刷新地图");
         gameLoop.start();
         gameLoop.resume();
         
-        // 7. 创建定时器，每秒自动移动一次
+        // 7. 创建定时器，每2秒自动移动一次
         ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1);
         scheduler.scheduleAtFixedRate(() -> {
             if (!gameLoop.isRunning() || gameLoop.isPaused() || quit) {
@@ -62,7 +62,7 @@ public class Main {
                 System.out.println("\n游戏结束: " + ruleEngine.getGameOverReason());
                 scheduler.shutdown();
             }
-        }, 0, 1, TimeUnit.SECONDS); // 每秒执行一次
+        }, 0, 2, TimeUnit.SECONDS); // 每2秒执行一次（原1秒）
         
         // 8. 主控制循环（只处理用户输入）
         boolean gameActive = true;
@@ -215,11 +215,11 @@ public class Main {
      */
     private static void printInstructions() {
         System.out.println("游戏说明:");
-        System.out.println("1. 蛇每秒自动前进一格");
+        System.out.println("1. 蛇每2秒自动前进一格");
         System.out.println("2. 按A键左转，按D键右转（蛇不能直接反向）");
         System.out.println("3. 游戏开始时随机生成5个食物");
-        System.out.println("4. 每5秒清空未吃掉的食物，重新生成5个新食物");
-        System.out.println("5. 每10秒地图重新生成障碍物（避开蛇和食物）");
+        System.out.println("4. 每10秒清空未吃掉的食物，重新生成5个新食物");
+        System.out.println("5. 每20秒地图重新生成障碍物（避开蛇和食物）");
         System.out.println("6. 食物类型和计分规则:");
         System.out.println("   - 普通食物 (*): 每个加1分");
         System.out.println("   - 特殊食物 ($): 连续吃n个，得分 = 1² + 2² + ... + n²");
@@ -229,7 +229,7 @@ public class Main {
         System.out.println("  a - 左转     d - 右转");
         System.out.println("  p - 暂停游戏   r - 继续游戏");
         System.out.println("  m - 显示详细地图   q - 退出游戏");
-        System.out.println("\n注意: 蛇每秒自动移动，你需要在移动前决定转向！");
+        System.out.println("\n注意: 蛇每2秒自动移动，你需要在移动前决定转向！");
     }
     
     /**
