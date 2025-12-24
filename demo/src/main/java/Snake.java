@@ -18,6 +18,8 @@ public class Snake {
         Point head = body.peekFirst();
         Point newHead = new Point(head);
         
+        newHead.x+=currentDirection.dx;
+        newHead.y+=currentDirection.dy;
         return newHead;
     }
     public void move() {
