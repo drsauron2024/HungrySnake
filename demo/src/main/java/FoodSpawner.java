@@ -62,8 +62,8 @@ public class FoodSpawner {
 
     private FoodType chooseFoodType() {
         int r = random.nextInt(100);
-        if (r < 50) return FoodType.SPECIAL;
-        if (r < 100) return FoodType.RARE;
+        if (r < 30) return FoodType.RARE;
+        if (r < 60) return FoodType.SPECIAL;
         return FoodType.NORMAL;
     }
 }
