@@ -1,6 +1,8 @@
 import java.awt.Point;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 public class WorldManager {
     private final World world;
@@ -25,21 +27,78 @@ public class WorldManager {
         Snake snake = new Snake(startPoint, Direction.RIGHT, 3);
         world.setSnake(snake);
         
-        // 2. 生成障碍物（不超过总格子的15%）
+        // 2. 初始生成障碍物（避开蛇的位置）
+        Set<Point> positionsToAvoid = new HashSet<>();
+        for (Point bodyPart : snake.getBody()) {
+            positionsToAvoid.add(new Point(bodyPart));
+        }
+        
         int totalCells = world.getWidth() * world.getHeight();
         int maxObstacleCells = (int)(totalCells * 0.15);
-        Obstacles obstacles = obstacleGenerator.generate(maxObstacleCells);
+        Obstacles obstacles = obstacleGenerator.generate(maxObstacleCells, positionsToAvoid);
+        
+        // 3. 移除蛇头朝向方向三个格子内的障碍物
+        clearObstaclesInFrontOfSnake(snake, obstacles);
+        
         world.setObstacles(obstacles);
         
-        // 3. 生成第一个食物
-        Food firstFood = foodSpawner.spawn(world, snake);
-        world.setFood(firstFood);
+        // 4. 初始生成5个食物
+        List<Food> initialFoods = foodSpawner.spawnMultiple(world, snake, 5);
+        for (Food food : initialFoods) {
+            world.addFood(food);
+        }
+        
+        System.out.println("游戏初始化完成！");
+        System.out.println("- 生成了" + obstacles.getAllCells().size() + "个障碍物");
+        System.out.println("- 生成了" + initialFoods.size() + "个初始食物");
     }
     
-    public void respawnFood() {
+    /**
+     * 清除蛇头朝向方向连续三个格子内的障碍物
+     */
+    private void clearObstaclesInFrontOfSnake(Snake snake, Obstacles obstacles) {
+        if (obstacles == null || snake == null) {
+            return;
+        }
+        
+        Point head = snake.getHead();
+        Direction direction = snake.getCurrentDirection();
+        
+        List<Point> cellsToClear = new ArrayList<>();
+        
+        // 检查蛇头前方三个格子
+        for (int i = 1; i <= 3; i++) {
+            Point frontCell = new Point(
+                head.x + direction.dx * i,
+                head.y + direction.dy * i
+            );
+            
+            // 如果格子超出边界，停止检查
+            if (!world.inBounds(frontCell)) {
+                break;
+            }
+            
+            cellsToClear.add(frontCell);
+        }
+        
+        // 从障碍物中移除这些格子
+        if (!cellsToClear.isEmpty()) {
+            for (Wall wall : obstacles.getWalls()) {
+                List<Point> wallCells = wall.getCells();
+                wallCells.removeAll(cellsToClear);
+            }
+            
+            // 清理可能因此变空的墙
+            obstacles.getWalls().removeIf(wall -> wall.getCells().isEmpty());
+            
+            System.out.println("已清除蛇头前方3格内的障碍物");
+        }
+    }
+    
+    public void respawnFoods(int count) {
         Snake snake = world.getSnake();
-        Food newFood = foodSpawner.spawn(world, snake);
-        world.setFood(newFood);
+        List<Food> newFoods = foodSpawner.spawnMultiple(world, snake, count);
+        world.setFoods(newFoods);
     }
     
     public boolean checkConnectivity() {

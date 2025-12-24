@@ -9,7 +9,7 @@ public class World {
     private final int height;
 
     private Snake snake;
-    private Food food;
+    private List<Food> foods = new ArrayList<>();  // 改为食物列表
     private Obstacles obstacles;
 
     private final Random random = new Random();
@@ -30,9 +30,14 @@ public class World {
         if (snake != null && snake.iscontains(p)) {
             return true;
         }
-        if (food != null && food.getPosition().equals(p)) {
-            return true;
+        
+        // 检查是否被任何食物占据
+        for (Food food : foods) {
+            if (food.getPosition().equals(p)) {
+                return true;
+            }
         }
+        
         if (obstacles != null && obstacles.getAllCells().contains(p)) {
             return true;
         }
@@ -69,8 +74,22 @@ public class World {
         this.snake = snake;
     }
 
-    public void setFood(Food food) {
-        this.food = food;
+    public void addFood(Food food) {
+        if (food != null) {
+            foods.add(food);
+        }
+    }
+    
+    public void setFoods(List<Food> foods) {
+        this.foods = new ArrayList<>(foods);
+    }
+    
+    public void clearFoods() {
+        foods.clear();
+    }
+    
+    public boolean removeFoodAt(Point position) {
+        return foods.removeIf(food -> food.getPosition().equals(position));
     }
 
     public void setObstacles(Obstacles obstacles) {
@@ -81,8 +100,20 @@ public class World {
         return snake;
     }
 
-    public Food getFood() {
-        return food;
+    public List<Food> getFoods() {
+        return foods;
+    }
+    
+    /**
+     * 获取指定位置的食物（如果存在）
+     */
+    public Food getFoodAt(Point position) {
+        for (Food food : foods) {
+            if (food.getPosition().equals(position)) {
+                return food;
+            }
+        }
+        return null;
     }
 
     public Obstacles getObstacles() {
