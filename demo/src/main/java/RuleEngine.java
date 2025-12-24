@@ -53,49 +53,24 @@ public class RuleEngine {
         
         World world = gameLoop.getWorld();
         Snake snake = world.getSnake();
-        Food food = world.getFood();
         ScoreManager scoreManager = gameLoop.getScoreManager();
-        
-        if (food == null) return;
         
         Point head = snake.getHead();
         
-        // 检查是否吃到食物
-        if (head.equals(food.getPosition())) {
-            // 计算增长量
-            int growthAmount = 1; // 默认
-            FoodType type = food.getType();
+        // 检查是否吃到任何食物
+        Food foodEaten = world.getFoodAt(head);
+        if (foodEaten != null) {
+            FoodType type = foodEaten.getType();
             
-            // 根据食物类型计算分数和增长
+            // 计算分数（ScoreManager内部处理连续逻辑）
             scoreManager.eatFood(type);
             
-            // 根据食物类型增加不同长度
-            switch (type) {
-                case SPECIAL:
-                    growthAmount = 2;
-                    break;
-                case RARE:
-                    growthAmount = 3;
-                    break;
-                case NORMAL:
-                default:
-                    growthAmount = 1;
-                    break;
-            }
+            // 蛇增长
+            snake.grow(type.getGrowth());
             
-            snake.grow(growthAmount);
-            
-            // 移除食物
-            world.setFood(null);
-            
-            // 更新游戏速度（随着分数增加，游戏加速）
-            int score = scoreManager.getScore();
-            int newSpeed = Math.max(50, 200 - (score / 10) * 10);
-            gameLoop.setSpeed(newSpeed);
-        } else {
-            // 没吃到食物，重置连击
-            scoreManager.resetCombo();
-        }
+            // 移除被吃掉的这个食物（其他食物保留）
+            world.removeFoodAt(head);
+        } 
     }
     
     public boolean isGameOver() {

@@ -1,6 +1,8 @@
 import java.awt.Point;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 public class WorldManager {
     private final World world;
@@ -25,21 +27,32 @@ public class WorldManager {
         Snake snake = new Snake(startPoint, Direction.RIGHT, 3);
         world.setSnake(snake);
         
-        // 2. 生成障碍物（不超过总格子的15%）
+        // 2. 初始生成障碍物（避开蛇的位置）
+        Set<Point> positionsToAvoid = new HashSet<>();
+        for (Point bodyPart : snake.getBody()) {
+            positionsToAvoid.add(new Point(bodyPart));
+        }
+        
         int totalCells = world.getWidth() * world.getHeight();
         int maxObstacleCells = (int)(totalCells * 0.15);
-        Obstacles obstacles = obstacleGenerator.generate(maxObstacleCells);
+        Obstacles obstacles = obstacleGenerator.generate(maxObstacleCells, positionsToAvoid);
         world.setObstacles(obstacles);
         
-        // 3. 生成第一个食物
-        Food firstFood = foodSpawner.spawn(world, snake);
-        world.setFood(firstFood);
+        // 3. 初始生成5个食物
+        List<Food> initialFoods = foodSpawner.spawnMultiple(world, snake, 5);
+        for (Food food : initialFoods) {
+            world.addFood(food);
+        }
+        
+        System.out.println("游戏初始化完成！");
+        System.out.println("- 生成了" + obstacles.getAllCells().size() + "个障碍物");
+        System.out.println("- 生成了" + initialFoods.size() + "个初始食物");
     }
     
-    public void respawnFood() {
+    public void respawnFoods(int count) {
         Snake snake = world.getSnake();
-        Food newFood = foodSpawner.spawn(world, snake);
-        world.setFood(newFood);
+        List<Food> newFoods = foodSpawner.spawnMultiple(world, snake, count);
+        world.setFoods(newFoods);
     }
     
     public boolean checkConnectivity() {

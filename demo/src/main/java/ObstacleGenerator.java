@@ -1,7 +1,9 @@
 import java.awt.Point;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Random;
+import java.util.Set;
 
 public class ObstacleGenerator {
 
@@ -17,11 +19,18 @@ public class ObstacleGenerator {
     }
 
     public Obstacles generate(int maxTotalCells) {
+        return generate(maxTotalCells, new HashSet<>());
+    }
+    
+    /**
+     * 生成障碍物，避开指定的位置
+     */
+    public Obstacles generate(int maxTotalCells, Set<Point> positionsToAvoid) {
         Obstacles obstacles = new Obstacles();
         int remaining = maxTotalCells;
 
         while (remaining >= minWallLength) {
-            Wall wall = tryGenerateOneWall(remaining);
+            Wall wall = tryGenerateOneWall(remaining, positionsToAvoid);
             if (wall == null) {
                 break;
             }
@@ -31,7 +40,7 @@ public class ObstacleGenerator {
         return obstacles;
     }
 
-    private Wall tryGenerateOneWall(int remaining) {
+    private Wall tryGenerateOneWall(int remaining, Set<Point> positionsToAvoid) {
         for (int attempt = 0; attempt < maxTryPerWall; attempt++) {
 
             boolean horizontal = random.nextBoolean();
@@ -55,7 +64,7 @@ public class ObstacleGenerator {
                 int y = start.y + (horizontal ? 0 : i);
                 Point p = new Point(x, y);
 
-                if (!world.inBounds(p) || !world.isEmpty(p)) {
+                if (!world.inBounds(p) || !world.isEmpty(p) || positionsToAvoid.contains(p)) {
                     valid = false;
                     break;
                 }

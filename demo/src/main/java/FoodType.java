@@ -1,11 +1,16 @@
 public enum FoodType {
     NORMAL{
         @Override
+        public int getGrowth() {
+            return 1;
+        }
+        @Override
         public int scoreForCombo(int combo) {
             return 1;
         }
     },
     SPECIAL{
+        @Override
         public int getGrowth() {
             return 2;
         }
@@ -15,6 +20,7 @@ public enum FoodType {
         }
     },
     RARE{
+        @Override
         public int getGrowth() {
             return 3;
         }
@@ -25,4 +31,5 @@ public enum FoodType {
     };
 
     public abstract int scoreForCombo(int combo);
+    public abstract int getGrowth();
 }
