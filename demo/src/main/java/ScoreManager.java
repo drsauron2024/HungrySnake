@@ -3,10 +3,13 @@ public class ScoreManager {
     private int combo = 0;
     private int highestCombo = 0;
 
-    public void eatFood(FoodType type) {
+    public int eatFood(FoodType type) {
         combo++;
-        highestCombo = Math.max(highestCombo, combo);
-        score += type.scoreForCombo(combo);
+        return switch (type) {
+            case NORMAL -> 1;
+            case SPECIAL -> (int) Math.pow(combo, 2);
+            case RARE -> (int) Math.pow(combo, 3);
+        };
     }
 
     public void resetCombo() {
