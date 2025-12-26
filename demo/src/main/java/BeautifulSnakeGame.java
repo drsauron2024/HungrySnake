@@ -445,8 +445,7 @@ public class BeautifulSnakeGame extends JFrame {
             startButton.setEnabled(false);
             pauseButton.setText("⏸️ 暂停游戏");
 
-            // 显示开始提示
-            showMessage("游戏开始！", "使用方向键或WASD控制蛇的移动\n空格键：暂停/继续");
+
         }
     }
 
