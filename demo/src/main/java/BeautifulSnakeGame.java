@@ -175,7 +175,7 @@ public class BeautifulSnakeGame extends JFrame {
         statsPanel.add(Box.createRigidArea(new Dimension(0, 10)));
 
         // 蛇长度
-        lengthLabel = createStatItem("🐍 蛇长度", "3");
+        lengthLabel = createStatItem("🐍 蛇蛇长度", "3");
         statsPanel.add(lengthLabel);
         statsPanel.add(Box.createRigidArea(new Dimension(0, 10)));
 
