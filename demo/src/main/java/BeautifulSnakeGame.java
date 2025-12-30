@@ -266,7 +266,7 @@ public class BeautifulSnakeGame extends JFrame {
         
         // 标题
         JLabel recordsTitle = new JLabel("📜 游戏记录");
-        recordsTitle.setFont(new Font("微软雅黑", Font.BOLD, 18));
+        recordsTitle.setFont(new Font("宋体", Font.BOLD, 18));
         recordsTitle.setForeground(new Color(255, 184, 0));
         recordsTitle.setHorizontalAlignment(SwingConstants.CENTER);
         recordsPanel.add(recordsTitle, BorderLayout.NORTH);
@@ -276,7 +276,7 @@ public class BeautifulSnakeGame extends JFrame {
         recordsArea.setEditable(false);
         recordsArea.setBackground(new Color(30, 30, 40));
         recordsArea.setForeground(new Color(220, 220, 220));
-        recordsArea.setFont(new Font("微软雅黑", Font.PLAIN, 12));
+        recordsArea.setFont(new Font("宋体", Font.PLAIN, 12));
         recordsArea.setLineWrap(true);
         recordsArea.setWrapStyleWord(true);
         recordsArea.setMargin(new Insets(10, 10, 10, 10));
@@ -311,7 +311,7 @@ public class BeautifulSnakeGame extends JFrame {
 
     private JButton createSmallButton(String text, Color color) {
         JButton button = new JButton(text);
-        button.setFont(new Font("微软雅黑", Font.BOLD, 12));
+        button.setFont(new Font("宋体", Font.BOLD, 12));
         button.setForeground(Color.BLACK);
         button.setBackground(color);
         button.setBorder(BorderFactory.createEmptyBorder(5, 10, 5, 10));
@@ -339,11 +339,11 @@ public class BeautifulSnakeGame extends JFrame {
         itemPanel.setOpaque(false);
 
         JLabel titleLabel = new JLabel(title);
-        titleLabel.setFont(new Font("微软雅黑", Font.PLAIN, 14));
+        titleLabel.setFont(new Font("宋体", Font.PLAIN, 14));
         titleLabel.setForeground(new Color(180, 180, 200));
 
         JLabel valueLabel = new JLabel(value);
-        valueLabel.setFont(new Font("微软雅黑", Font.BOLD, 16));
+        valueLabel.setFont(new Font("宋体", Font.BOLD, 16));
         valueLabel.setForeground(Color.WHITE);
         valueLabel.setHorizontalAlignment(SwingConstants.RIGHT);
 
@@ -360,7 +360,7 @@ public class BeautifulSnakeGame extends JFrame {
 
     private void addLegend(JPanel panel) {
         JLabel legendTitle = new JLabel("🎨 图例说明");
-        legendTitle.setFont(new Font("微软雅黑", Font.BOLD, 16));
+        legendTitle.setFont(new Font("宋体", Font.BOLD, 16));
         legendTitle.setForeground(ACCENT_COLOR);
         legendTitle.setAlignmentX(Component.CENTER_ALIGNMENT);
         panel.add(legendTitle);
@@ -378,7 +378,7 @@ public class BeautifulSnakeGame extends JFrame {
 
         for (String item : legendItems) {
             JLabel itemLabel = new JLabel(item);
-            itemLabel.setFont(new Font("微软雅黑", Font.PLAIN, 12));
+            itemLabel.setFont(new Font("宋体", Font.PLAIN, 12));
             itemLabel.setForeground(TEXT_COLOR);
             itemLabel.setAlignmentX(Component.LEFT_ALIGNMENT);
             panel.add(itemLabel);
@@ -428,7 +428,7 @@ public class BeautifulSnakeGame extends JFrame {
 
                 // 绘制文字
                 g2.setColor(Color.WHITE);
-                g2.setFont(new Font("微软雅黑", Font.BOLD, 14));
+                g2.setFont(new Font("宋体", Font.BOLD, 14));
                 FontMetrics fm = g2.getFontMetrics();
                 int textWidth = fm.stringWidth(getText());
                 int x = (getWidth() - textWidth) / 2;
