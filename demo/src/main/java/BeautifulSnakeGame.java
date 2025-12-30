@@ -312,7 +312,7 @@ public class BeautifulSnakeGame extends JFrame {
     private JButton createSmallButton(String text, Color color) {
         JButton button = new JButton(text);
         button.setFont(new Font("微软雅黑", Font.BOLD, 12));
-        button.setForeground(Color.WHITE);
+        button.setForeground(Color.BLACK);
         button.setBackground(color);
         button.setBorder(BorderFactory.createEmptyBorder(5, 10, 5, 10));
         button.setFocusPainted(false);
@@ -694,12 +694,12 @@ public class BeautifulSnakeGame extends JFrame {
 
     private void loadAndDisplayRecords() {
         StringBuilder sb = new StringBuilder();
-        sb.append("🎯 最高分记录：\n");
+        sb.append("最高分记录：\n");
         sb.append("====================\n");
         sb.append(GameRecordManager.getHighScore());
         sb.append("\n\n");
         
-        sb.append("📅 最近游戏记录：\n");
+        sb.append("最近游戏记录：\n");
         sb.append("====================\n");
         
         List<String> recentRecords = GameRecordManager.getRecentRecords(10);
@@ -713,7 +713,7 @@ public class BeautifulSnakeGame extends JFrame {
         }
         
         sb.append("\n");
-        sb.append("📊 文件信息：\n");
+        sb.append("文件信息：\n");
         sb.append("====================\n");
         sb.append(GameRecordManager.getFileInfo());
         
