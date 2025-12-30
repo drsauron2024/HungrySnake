@@ -1,4 +1,9 @@
 import java.awt.Point;
+import java.io.BufferedWriter;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.Scanner;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
@@ -45,6 +50,9 @@ public class Main {
         System.out.println("- 每10秒刷新食物，每20秒刷新地图");
         gameLoop.start();
         gameLoop.resume();
+        
+        // 记录游戏开始时间
+        long startTime = System.currentTimeMillis();
         
         // 7. 创建定时器，每2秒自动移动一次
         ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1);
@@ -125,6 +133,12 @@ public class Main {
             if (ruleEngine.isGameOver()) {
                 gameActive = false;
                 scheduler.shutdown();
+                
+                // 计算游戏时间
+                long gameTime = (System.currentTimeMillis() - startTime) / 1000;
+                
+                // 保存游戏记录
+                saveGameRecord(scoreManager, world, gameTime);
             }
         }
         
@@ -360,6 +374,36 @@ public class Main {
         }
         
         System.out.println("\n图例: ↑↓←→-蛇头(方向) o-蛇身 *-普通食物 $-特殊食物 &-稀有食物 #-障碍物");
+    }
+    
+    /**
+     * 保存游戏记录到文件
+     */
+    private static void saveGameRecord(ScoreManager scoreManager, World world, long gameTime) {
+        try {
+            String fileName = "snake_game_records.txt";
+            SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+            String timestamp = dateFormat.format(new Date());
+            
+            try (FileWriter writer = new FileWriter(fileName, true);
+                 BufferedWriter bw = new BufferedWriter(writer)) {
+                
+                String record = String.format("%s | 分数: %d | 长度: %d | 时间: %02d:%02d | 来源: 控制台版",
+                        timestamp, 
+                        scoreManager.getScore(),
+                        world.getSnake() != null ? world.getSnake().getLength() : 0,
+                        gameTime / 60, gameTime % 60);
+                
+                bw.write(record);
+                bw.newLine();
+                bw.flush();
+                
+                System.out.println("\n游戏记录已保存到文件: " + fileName);
+                System.out.println("记录内容: " + record);
+            }
+        } catch (IOException e) {
+            System.err.println("保存记录失败: " + e.getMessage());
+        }
     }
     
     /**

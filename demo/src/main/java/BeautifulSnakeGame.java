@@ -1,10 +1,52 @@
-import javax.swing.*;
-import javax.swing.border.*;
-import java.awt.*;
-import java.awt.event.*;
+import java.awt.BasicStroke;
+import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.Component;
+import java.awt.Cursor;
+import java.awt.Dimension;
+import java.awt.Font;
+import java.awt.FontMetrics;
+import java.awt.GradientPaint;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.GridLayout;
+import java.awt.Insets;
+import java.awt.Point;
+import java.awt.RenderingHints;
+import java.awt.event.ActionEvent;
+import java.awt.event.KeyEvent;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.io.File;
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.List;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
+
+import javax.swing.AbstractAction;
+import javax.swing.BorderFactory;
+import javax.swing.Box;
+import javax.swing.BoxLayout;
+import javax.swing.JButton;
+import javax.swing.JComponent;
+import javax.swing.JFileChooser;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JTextArea;
+import javax.swing.KeyStroke;
+import javax.swing.ScrollPaneConstants;
+import javax.swing.SwingConstants;
+import javax.swing.SwingUtilities;
+import javax.swing.Timer;
+import javax.swing.UIManager;
+import javax.swing.border.LineBorder;
 
 public class BeautifulSnakeGame extends JFrame {
     // 颜色主题
@@ -23,6 +65,7 @@ public class BeautifulSnakeGame extends JFrame {
     private GamePanel gamePanel;
     private JPanel statsPanel;
     private JPanel controlPanel;
+    private JPanel recordsPanel;
     private JLabel scoreLabel;
     private JLabel lengthLabel;
     private JLabel timeLabel;
@@ -33,6 +76,9 @@ public class BeautifulSnakeGame extends JFrame {
     private JButton pauseButton;
     private JButton resetButton;
     private JButton helpButton;
+    private JTextArea recordsArea;
+    private JScrollPane recordsScroll;
+    private JButton showRecordsButton;
 
     // 游戏逻辑
     private WorldManager worldManager;
@@ -71,6 +117,9 @@ public class BeautifulSnakeGame extends JFrame {
 
         // 创建游戏面板
         createGamePanel();
+
+        // 创建左侧记录面板
+        createRecordsPanel();
 
         // 创建右侧面板（统计信息）
         createStatsPanel();
@@ -203,6 +252,85 @@ public class BeautifulSnakeGame extends JFrame {
         addLegend(statsPanel);
 
         add(statsPanel, BorderLayout.EAST);
+    }
+
+    private void createRecordsPanel() {
+        recordsPanel = new JPanel();
+        recordsPanel.setLayout(new BorderLayout());
+        recordsPanel.setBackground(PANEL_BG);
+        recordsPanel.setBorder(BorderFactory.createCompoundBorder(
+                new LineBorder(new Color(60, 60, 80), 2, true),
+                BorderFactory.createEmptyBorder(10, 10, 10, 10)
+        ));
+        recordsPanel.setPreferredSize(new Dimension(300, 0));
+        
+        // 标题
+        JLabel recordsTitle = new JLabel("📜 游戏记录");
+        recordsTitle.setFont(new Font("微软雅黑", Font.BOLD, 18));
+        recordsTitle.setForeground(new Color(255, 184, 0));
+        recordsTitle.setHorizontalAlignment(SwingConstants.CENTER);
+        recordsPanel.add(recordsTitle, BorderLayout.NORTH);
+        
+        // 记录显示区域
+        recordsArea = new JTextArea();
+        recordsArea.setEditable(false);
+        recordsArea.setBackground(new Color(30, 30, 40));
+        recordsArea.setForeground(new Color(220, 220, 220));
+        recordsArea.setFont(new Font("微软雅黑", Font.PLAIN, 12));
+        recordsArea.setLineWrap(true);
+        recordsArea.setWrapStyleWord(true);
+        recordsArea.setMargin(new Insets(10, 10, 10, 10));
+        
+        recordsScroll = new JScrollPane(recordsArea);
+        recordsScroll.setBorder(BorderFactory.createLineBorder(new Color(60, 60, 80), 1));
+        recordsScroll.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
+        
+        recordsPanel.add(recordsScroll, BorderLayout.CENTER);
+        
+        // 控制按钮面板
+        JPanel recordsControlPanel = new JPanel(new GridLayout(1, 3, 5, 0));
+        recordsControlPanel.setBackground(PANEL_BG);
+        recordsControlPanel.setOpaque(false);
+        
+        JButton showRecordsButton = createSmallButton("刷新记录", new Color(255, 0, 0));
+        JButton clearRecordsButton = createSmallButton("清空记录", new Color(0, 255, 0));
+        JButton exportRecordsButton = createSmallButton("导出记录", new Color(0, 0, 255));
+        
+        showRecordsButton.addActionListener(e -> loadAndDisplayRecords());
+        clearRecordsButton.addActionListener(e -> clearRecords());
+        exportRecordsButton.addActionListener(e -> exportRecords());
+        
+        recordsControlPanel.add(showRecordsButton);
+        recordsControlPanel.add(clearRecordsButton);
+        recordsControlPanel.add(exportRecordsButton);
+        
+        recordsPanel.add(recordsControlPanel, BorderLayout.SOUTH);
+        
+        add(recordsPanel, BorderLayout.WEST);
+    }
+
+    private JButton createSmallButton(String text, Color color) {
+        JButton button = new JButton(text);
+        button.setFont(new Font("微软雅黑", Font.BOLD, 12));
+        button.setForeground(Color.WHITE);
+        button.setBackground(color);
+        button.setBorder(BorderFactory.createEmptyBorder(5, 10, 5, 10));
+        button.setFocusPainted(false);
+        button.setCursor(new Cursor(Cursor.HAND_CURSOR));
+        
+        button.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseEntered(MouseEvent e) {
+                button.setBackground(color.brighter());
+            }
+            
+            @Override
+            public void mouseExited(MouseEvent e) {
+                button.setBackground(color);
+            }
+        });
+        
+        return button;
     }
 
     private JLabel createStatItem(String title, String value) {
@@ -399,7 +527,6 @@ public class BeautifulSnakeGame extends JFrame {
         });
     }
 
-    // 游戏逻辑方法（保持原有逻辑）
     private void setDirection(Direction dir) {
         if (!gameLoop.isRunning() || gameLoop.isPaused()) {
             return;
@@ -444,8 +571,6 @@ public class BeautifulSnakeGame extends JFrame {
             statusLabel.setText("游戏中");
             startButton.setEnabled(false);
             pauseButton.setText("⏸️ 暂停游戏");
-
-
         }
     }
 
@@ -480,6 +605,9 @@ public class BeautifulSnakeGame extends JFrame {
 
         gamePanel.repaint();
         showMessage("游戏重置", "准备开始新游戏！");
+        
+        // 刷新记录显示
+        loadAndDisplayRecords();
     }
 
     private void showHelp() {
@@ -498,6 +626,11 @@ public class BeautifulSnakeGame extends JFrame {
             • 每20秒刷新地图
             • 连击吃同类型食物分数更高
             
+            📜 记录功能：
+            • 每局游戏后自动保存记录
+            • 查看历史最高分和最近记录
+            • 可导出记录为文本文件
+            
             🎯 游戏目标：
             • 获得尽可能高的分数
             • 避免撞墙、障碍物和自己
@@ -513,15 +646,26 @@ public class BeautifulSnakeGame extends JFrame {
             scheduler.shutdown();
         }
 
+        // 保存游戏记录
+        long gameTime = (System.currentTimeMillis() - startTime) / 1000;
+        int score = scoreManager.getScore();
+        int length = worldManager.getWorld().getSnake().getLength();
+        
+        GameRecordManager.saveRecord(score, length, gameTime);
+
         String message = "🎮 游戏结束！\n\n" +
                 "💥 原因：" + ruleEngine.getGameOverReason() + "\n" +
-                "🏆 最终分数：" + scoreManager.getScore() + "\n" +
-                "🐍 蛇长度：" + worldManager.getWorld().getSnake().getLength() + "\n\n" +
-                "点击\"重新开始\"按钮再来一局！";
+                "🏆 最终分数：" + score + "\n" +
+                "🐍 蛇长度：" + length + "\n" +
+                "⏱️ 游戏时间：" + String.format("%02d:%02d", gameTime / 60, gameTime % 60) + "\n\n" +
+                "记录已保存！点击\"刷新记录\"查看历史记录。";
 
         showMessage("游戏结束", message);
         statusLabel.setText("游戏结束");
         startButton.setEnabled(false);
+        
+        // 自动刷新记录显示
+        loadAndDisplayRecords();
     }
 
     private void updateDisplay() {
@@ -545,6 +689,81 @@ public class BeautifulSnakeGame extends JFrame {
 
             foodLabel.setText(foodTime + "秒");
             mapLabel.setText(mapTime + "秒");
+        }
+    }
+
+    private void loadAndDisplayRecords() {
+        StringBuilder sb = new StringBuilder();
+        sb.append("🎯 最高分记录：\n");
+        sb.append("====================\n");
+        sb.append(GameRecordManager.getHighScore());
+        sb.append("\n\n");
+        
+        sb.append("📅 最近游戏记录：\n");
+        sb.append("====================\n");
+        
+        List<String> recentRecords = GameRecordManager.getRecentRecords(10);
+        if (recentRecords.isEmpty()) {
+            sb.append("暂无游戏记录\n");
+            sb.append("开始你的第一局游戏吧！\n");
+        } else {
+            for (int i = 0; i < recentRecords.size(); i++) {
+                sb.append(String.format("%2d. %s\n", i + 1, recentRecords.get(i)));
+            }
+        }
+        
+        sb.append("\n");
+        sb.append("📊 文件信息：\n");
+        sb.append("====================\n");
+        sb.append(GameRecordManager.getFileInfo());
+        
+        recordsArea.setText(sb.toString());
+        recordsArea.setCaretPosition(0); // 滚动到顶部
+    }
+
+    private void clearRecords() {
+        int result = JOptionPane.showConfirmDialog(this,
+                "确定要清空所有游戏记录吗？\n此操作不可恢复！",
+                "确认清空",
+                JOptionPane.YES_NO_OPTION,
+                JOptionPane.WARNING_MESSAGE);
+        
+        if (result == JOptionPane.YES_OPTION) {
+            File file = new File("snake_game_records.txt");
+            if (file.exists() && file.delete()) {
+                showMessage("清空记录", "所有游戏记录已清空！");
+                loadAndDisplayRecords();
+            } else {
+                showMessage("错误", "清空记录失败！");
+            }
+        }
+    }
+
+    private void exportRecords() {
+        JFileChooser fileChooser = new JFileChooser();
+        fileChooser.setDialogTitle("导出游戏记录");
+        fileChooser.setSelectedFile(new File("snake_records_export.txt"));
+        
+        int userSelection = fileChooser.showSaveDialog(this);
+        if (userSelection == JFileChooser.APPROVE_OPTION) {
+            File fileToSave = fileChooser.getSelectedFile();
+            try {
+                List<String> records = GameRecordManager.loadRecords();
+                try (PrintWriter writer = new PrintWriter(fileToSave)) {
+                    writer.println("========== 贪吃蛇游戏记录 ==========");
+                    writer.println("导出时间: " + new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date()));
+                    writer.println("===================================\n");
+                    
+                    for (String record : records) {
+                        writer.println(record);
+                    }
+                    
+                    writer.println("\n========== 记录结束 ==========");
+                }
+                showMessage("导出成功", "游戏记录已成功导出到:\n" + fileToSave.getAbsolutePath());
+            } catch (IOException e) {
+                showMessage("导出失败", "导出记录失败: " + e.getMessage());
+            }
         }
     }
 
@@ -732,11 +951,25 @@ public class BeautifulSnakeGame extends JFrame {
         } catch (Exception e) {
             e.printStackTrace();
         }
+        
+        // 确保记录文件存在
+        File recordFile = new File("snake_game_records.txt");
+        if (!recordFile.exists()) {
+            try {
+                recordFile.createNewFile();
+                System.out.println("创建游戏记录文件: " + recordFile.getAbsolutePath());
+            } catch (IOException e) {
+                System.err.println("创建记录文件失败: " + e.getMessage());
+            }
+        }
 
         // 启动游戏
         SwingUtilities.invokeLater(() -> {
             BeautifulSnakeGame game = new BeautifulSnakeGame();
             game.setVisible(true);
+            
+            // 初始化记录显示
+            game.loadAndDisplayRecords();
         });
     }
 }
