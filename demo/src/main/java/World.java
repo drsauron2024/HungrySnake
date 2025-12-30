@@ -1,7 +1,6 @@
 import java.awt.Point;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
 
 public class World {
 
@@ -11,8 +10,6 @@ public class World {
     private Snake snake;
     private List<Food> foods = new ArrayList<>();  // 改为食物列表
     private Obstacles obstacles;
-
-    private final Random random = new Random();
 
     public World(int width, int height) {
         this.width = width;

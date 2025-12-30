@@ -34,7 +34,7 @@ public class WorldManager {
             positionsToAvoid.add(segment);
         }
         
-        //3. 避开蛇头周围3x3区域
+        // 3. 避开蛇头周围3x3区域
         Point head = snake.getHead();
         for (int dx = -1; dx <= 1; dx++) {
             for (int dy = -1; dy <= 1; dy++) {

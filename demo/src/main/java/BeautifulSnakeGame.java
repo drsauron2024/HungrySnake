@@ -51,7 +51,6 @@ import javax.swing.border.LineBorder;
 public class BeautifulSnakeGame extends JFrame {
     // 颜色主题
     private static final Color DARK_BG = new Color(25, 25, 35);      // 深色背景
-    private static final Color LIGHT_BG = new Color(40, 40, 50);     // 浅色背景
     private static final Color ACCENT_COLOR = new Color(0, 184, 148); // 主色调
     private static final Color TEXT_COLOR = new Color(220, 220, 220); // 文字颜色
     private static final Color PANEL_BG = new Color(35, 35, 45);     // 面板背景
@@ -78,7 +77,6 @@ public class BeautifulSnakeGame extends JFrame {
     private JButton helpButton;
     private JTextArea recordsArea;
     private JScrollPane recordsScroll;
-    private JButton showRecordsButton;
 
     // 游戏逻辑
     private WorldManager worldManager;
@@ -88,7 +86,6 @@ public class BeautifulSnakeGame extends JFrame {
     private ScheduledExecutorService scheduler;
 
     private long startTime;
-    private volatile Direction nextDirection = null;
 
     public BeautifulSnakeGame() {
         initUI();
@@ -490,9 +487,6 @@ public class BeautifulSnakeGame extends JFrame {
     }
 
     private void setupKeyboard() {
-        // 使用Key Bindings（Swing推荐的方式）
-        JPanel contentPane = (JPanel) getContentPane();
-
         // 方向键控制
         bindKey("LEFT", KeyEvent.VK_LEFT, () -> setDirection(Direction.LEFT));
         bindKey("A", KeyEvent.VK_A, () -> setDirection(Direction.LEFT));
@@ -559,7 +553,6 @@ public class BeautifulSnakeGame extends JFrame {
                 }
 
                 SwingUtilities.invokeLater(() -> {
-                    boolean stillRunning = gameLoop.tick();
                     updateDisplay();
 
                     if (ruleEngine.isGameOver()) {
@@ -772,27 +765,6 @@ public class BeautifulSnakeGame extends JFrame {
             JOptionPane.showMessageDialog(this, message, title,
                     JOptionPane.INFORMATION_MESSAGE);
         });
-    }
-
-    private void showFocusHint() {
-        gamePanel.setBorder(BorderFactory.createCompoundBorder(
-                BorderFactory.createLineBorder(ACCENT_COLOR, 3),
-                BorderFactory.createLineBorder(new Color(40, 40, 60), 1)
-        ));
-
-        new Thread(() -> {
-            try {
-                Thread.sleep(2000);
-                SwingUtilities.invokeLater(() -> gamePanel.setBorder(
-                        BorderFactory.createCompoundBorder(
-                                BorderFactory.createLineBorder(new Color(60, 60, 80), 3),
-                                BorderFactory.createLineBorder(new Color(40, 40, 60), 1)
-                        )
-                ));
-            } catch (InterruptedException ex) {
-                Thread.currentThread().interrupt();
-            }
-        }).start();
     }
 
     // 内部类：游戏面板
