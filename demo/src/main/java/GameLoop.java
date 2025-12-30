@@ -116,6 +116,17 @@ public class GameLoop {
                 }
             }
             
+            // 避开蛇头周围3x3区域
+            Point head = snake.getHead();
+            for (int dx = -1; dx <= 1; dx++) {
+                for (int dy = -1; dy <= 1; dy++) {
+                    Point adjacent = new Point(head.x + dx, head.y + dy);
+                    if (world.inBounds(adjacent)) {
+                        positionsToAvoid.add(adjacent);
+                    }
+                }
+            }
+            
             // 重新生成障碍物（不超过总格子的15%）
             int totalCells = world.getWidth() * world.getHeight();
             int maxObstacleCells = (int)(totalCells * 0.15);

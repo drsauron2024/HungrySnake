@@ -29,8 +29,20 @@ public class WorldManager {
         
         // 2. 初始生成障碍物（避开蛇的位置）
         Set<Point> positionsToAvoid = new HashSet<>();
-        for (Point bodyPart : snake.getBody()) {
-            positionsToAvoid.add(new Point(bodyPart));
+        positionsToAvoid.add(snake.getHead());
+        for (Point segment : snake.getBody()) {
+            positionsToAvoid.add(segment);
+        }
+        
+        //3. 避开蛇头周围3x3区域
+        Point head = snake.getHead();
+        for (int dx = -1; dx <= 1; dx++) {
+            for (int dy = -1; dy <= 1; dy++) {
+                Point adjacent = new Point(head.x + dx, head.y + dy);
+                if (world.inBounds(adjacent)) {
+                    positionsToAvoid.add(adjacent);
+                }
+            }
         }
         
         int totalCells = world.getWidth() * world.getHeight();
@@ -38,7 +50,7 @@ public class WorldManager {
         Obstacles obstacles = obstacleGenerator.generate(maxObstacleCells, positionsToAvoid);
         
         // 3. 移除蛇头朝向方向三个格子内的障碍物
-        clearObstaclesInFrontOfSnake(snake, obstacles);
+        //clearObstaclesInFrontOfSnake(snake, obstacles);
         
         world.setObstacles(obstacles);
         
@@ -56,7 +68,7 @@ public class WorldManager {
     /**
      * 清除蛇头朝向方向连续三个格子内的障碍物
      */
-    private void clearObstaclesInFrontOfSnake(Snake snake, Obstacles obstacles) {
+    /*private void clearObstaclesInFrontOfSnake(Snake snake, Obstacles obstacles) {
         if (obstacles == null || snake == null) {
             return;
         }
@@ -93,7 +105,7 @@ public class WorldManager {
             
             System.out.println("已清除蛇头前方3格内的障碍物");
         }
-    }
+    }*/
     
     public void respawnFoods(int count) {
         Snake snake = world.getSnake();
