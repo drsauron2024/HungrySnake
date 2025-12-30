@@ -147,7 +147,7 @@ public class BeautifulSnakeGame extends JFrame {
         titlePanel.setBorder(BorderFactory.createEmptyBorder(0, 0, 10, 0));
 
         // 创建渐变标题
-        JLabel titleLabel = new JLabel("✨ 炫彩贪吃蛇 ✨");
+        JLabel titleLabel = new JLabel("贪吃蛇大作战");
         titleLabel.setFont(new Font("微软雅黑", Font.BOLD, 28));
         titleLabel.setForeground(new Color(255, 255, 255));
 
@@ -211,7 +211,7 @@ public class BeautifulSnakeGame extends JFrame {
         statsPanel.setPreferredSize(new Dimension(220, 0));
 
         // 标题
-        JLabel statsTitle = new JLabel("📊 游戏统计");
+        JLabel statsTitle = new JLabel("游戏统计");
         statsTitle.setFont(new Font("微软雅黑", Font.BOLD, 18));
         statsTitle.setForeground(ACCENT_COLOR);
         statsTitle.setAlignmentX(Component.CENTER_ALIGNMENT);
@@ -265,7 +265,7 @@ public class BeautifulSnakeGame extends JFrame {
         recordsPanel.setPreferredSize(new Dimension(300, 0));
         
         // 标题
-        JLabel recordsTitle = new JLabel("📜 游戏记录");
+        JLabel recordsTitle = new JLabel("游戏记录");
         recordsTitle.setFont(new Font("微软雅黑", Font.BOLD, 18));
         recordsTitle.setForeground(new Color(255, 184, 0));
         recordsTitle.setHorizontalAlignment(SwingConstants.CENTER);
@@ -359,7 +359,7 @@ public class BeautifulSnakeGame extends JFrame {
     }
 
     private void addLegend(JPanel panel) {
-        JLabel legendTitle = new JLabel("🎨 图例说明");
+        JLabel legendTitle = new JLabel("图例说明");
         legendTitle.setFont(new Font("微软雅黑", Font.BOLD, 16));
         legendTitle.setForeground(ACCENT_COLOR);
         legendTitle.setAlignmentX(Component.CENTER_ALIGNMENT);
@@ -367,13 +367,13 @@ public class BeautifulSnakeGame extends JFrame {
         panel.add(Box.createRigidArea(new Dimension(0, 10)));
 
         String[] legendItems = {
-                "🐍 蛇头 - 红色带眼睛",
-                "🟢 蛇身 - 绿色方块",
-                "🍎 普通食物 - 绿色圆圈 (+1分)",
-                "⭐ 特殊食物 - 黄色圆圈 (连击)",
-                "💎 稀有食物 - 紫色圆圈 (高连击)",
-                "🧱 障碍物 - 蓝色方块",
-                "⬛ 空地 - 黑色格子"
+                "蛇头 - 红色带眼睛",
+                "蛇身 - 绿色方块",
+                "普通食物 - 绿色圆圈 (+1分)",
+                "特殊食物 - 黄色圆圈 (连击)",
+                "稀有食物 - 紫色圆圈 (高连击)",
+                "障碍物 - 蓝色方块",
+                "空地 - 黑色格子"
         };
 
         for (String item : legendItems) {
@@ -393,10 +393,10 @@ public class BeautifulSnakeGame extends JFrame {
         controlPanel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
 
         // 创建漂亮的按钮
-        startButton = createStyledButton("🚀 开始游戏", ACCENT_COLOR);
-        pauseButton = createStyledButton("⏸️ 暂停游戏", new Color(255, 193, 7));
-        resetButton = createStyledButton("🔄 重新开始", new Color(233, 30, 99));
-        helpButton = createStyledButton("❓ 游戏帮助", new Color(33, 150, 243));
+        startButton = createStyledButton("开始游戏", ACCENT_COLOR);
+        pauseButton = createStyledButton("暂停游戏", new Color(255, 193, 7));
+        resetButton = createStyledButton("重新开始", new Color(233, 30, 99));
+        helpButton = createStyledButton("游戏帮助", new Color(33, 150, 243));
 
         controlPanel.add(startButton);
         controlPanel.add(pauseButton);
