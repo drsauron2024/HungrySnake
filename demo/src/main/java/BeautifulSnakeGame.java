@@ -212,39 +212,39 @@ public class BeautifulSnakeGame extends JFrame {
 
         // 标题
         JLabel statsTitle = new JLabel("游戏统计");
-        statsTitle.setFont(new Font("微软雅黑", Font.BOLD, 18));
+        statsTitle.setFont(new Font("宋体", Font.BOLD, 18));
         statsTitle.setForeground(ACCENT_COLOR);
         statsTitle.setAlignmentX(Component.CENTER_ALIGNMENT);
         statsPanel.add(statsTitle);
         statsPanel.add(Box.createRigidArea(new Dimension(0, 15)));
 
         // 分数显示
-        scoreLabel = createStatItem("🎯 当前分数", "0");
+        scoreLabel = createStatItem("当前分数", "0");
         statsPanel.add(scoreLabel);
         statsPanel.add(Box.createRigidArea(new Dimension(0, 10)));
 
         // 蛇长度
-        lengthLabel = createStatItem("🐍 蛇蛇长度", "3");
+        lengthLabel = createStatItem("蛇蛇长度", "3");
         statsPanel.add(lengthLabel);
         statsPanel.add(Box.createRigidArea(new Dimension(0, 10)));
 
         // 时间
-        timeLabel = createStatItem("⏰ 游戏时间", "00:00");
+        timeLabel = createStatItem("游戏时间", "00:00");
         statsPanel.add(timeLabel);
         statsPanel.add(Box.createRigidArea(new Dimension(0, 10)));
 
         // 状态
-        statusLabel = createStatItem("📈 游戏状态", "准备开始");
+        statusLabel = createStatItem("游戏状态", "准备开始");
         statsPanel.add(statusLabel);
         statsPanel.add(Box.createRigidArea(new Dimension(0, 10)));
 
         // 食物刷新
-        foodLabel = createStatItem("🍎 食物刷新", "10秒");
+        foodLabel = createStatItem("食物刷新", "10秒");
         statsPanel.add(foodLabel);
         statsPanel.add(Box.createRigidArea(new Dimension(0, 10)));
 
         // 地图刷新
-        mapLabel = createStatItem("🗺️ 地图刷新", "20秒");
+        mapLabel = createStatItem("地图刷新", "20秒");
         statsPanel.add(mapLabel);
 
         // 添加图例
@@ -265,8 +265,8 @@ public class BeautifulSnakeGame extends JFrame {
         recordsPanel.setPreferredSize(new Dimension(300, 0));
         
         // 标题
-        JLabel recordsTitle = new JLabel("📜 游戏记录");
-        recordsTitle.setFont(new Font("微软雅黑", Font.BOLD, 18));
+        JLabel recordsTitle = new JLabel("游戏记录");
+        recordsTitle.setFont(new Font("宋体", Font.BOLD, 18));
         recordsTitle.setForeground(new Color(255, 184, 0));
         recordsTitle.setHorizontalAlignment(SwingConstants.CENTER);
         recordsPanel.add(recordsTitle, BorderLayout.NORTH);
@@ -334,33 +334,33 @@ public class BeautifulSnakeGame extends JFrame {
     }
 
     private JLabel createStatItem(String title, String value) {
-        JPanel itemPanel = new JPanel(new BorderLayout());
-        itemPanel.setBackground(PANEL_BG);
-        itemPanel.setOpaque(false);
+    JPanel itemPanel = new JPanel(new BorderLayout());
+    itemPanel.setBackground(PANEL_BG);
+    itemPanel.setOpaque(false);
 
-        JLabel titleLabel = new JLabel(title);
-        titleLabel.setFont(new Font("宋体", Font.PLAIN, 14));
-        titleLabel.setForeground(new Color(180, 180, 200));
+    JLabel titleLabel = new JLabel(title);
+    titleLabel.setFont(new Font("微软雅黑", Font.PLAIN, 16)); // 加大到16
+    titleLabel.setForeground(new Color(200, 200, 220)); // 更亮的浅灰色
 
-        JLabel valueLabel = new JLabel(value);
-        valueLabel.setFont(new Font("宋体", Font.BOLD, 16));
-        valueLabel.setForeground(Color.WHITE);
-        valueLabel.setHorizontalAlignment(SwingConstants.RIGHT);
+    JLabel valueLabel = new JLabel(value);
+    valueLabel.setFont(new Font("微软雅黑", Font.BOLD, 22)); // 加大到22
+    valueLabel.setForeground(Color.WHITE); // 白色
+    valueLabel.setHorizontalAlignment(SwingConstants.RIGHT);
 
-        itemPanel.add(titleLabel, BorderLayout.WEST);
-        itemPanel.add(valueLabel, BorderLayout.EAST);
+    itemPanel.add(titleLabel, BorderLayout.WEST);
+    itemPanel.add(valueLabel, BorderLayout.EAST);
 
-        return new JLabel() {
-            @Override
-            public Component add(Component comp) {
-                return itemPanel.add(comp);
-            }
-        };
-    }
+    return new JLabel() {
+        @Override
+        public Component add(Component comp) {
+            return itemPanel.add(comp);
+        }
+    };
+}
 
     private void addLegend(JPanel panel) {
-        JLabel legendTitle = new JLabel("🎨 图例说明");
-        legendTitle.setFont(new Font("微软雅黑", Font.BOLD, 16));
+        JLabel legendTitle = new JLabel("图例说明");
+        legendTitle.setFont(new Font("宋体", Font.BOLD, 16));
         legendTitle.setForeground(ACCENT_COLOR);
         legendTitle.setAlignmentX(Component.CENTER_ALIGNMENT);
         panel.add(legendTitle);
