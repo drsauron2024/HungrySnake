@@ -100,7 +100,7 @@ public class BeautifulSnakeGame extends JFrame {
     }
 
     private void initUI() {
-        setTitle("🐍 炫彩贪吃蛇 🎮");
+        setTitle("🐍 贪吃蛇大作战 🎮");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
         // 设置窗口图标（如果有的话）
