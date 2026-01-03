@@ -356,7 +356,7 @@ public class BeautifulSnakeGame extends JFrame {
     }
 
     private void addLegend(JPanel panel) {
-        JLabel legendTitle = new JLabel("🎨 图例说明");
+        JLabel legendTitle = new JLabel("图例说明");
         legendTitle.setFont(new Font("微软雅黑", Font.BOLD, 16));
         legendTitle.setForeground(ACCENT_COLOR);
         legendTitle.setAlignmentX(Component.CENTER_ALIGNMENT);
@@ -364,13 +364,13 @@ public class BeautifulSnakeGame extends JFrame {
         panel.add(Box.createRigidArea(new Dimension(0, 10)));
 
         String[] legendItems = {
-                "蛇头 - 红色带眼睛",
-                "蛇身 - 绿色方块",
-                "普通食物 - 绿色圆圈 (+1分)",
-                "特殊食物 - 黄色圆圈 (连击)",
-                "稀有食物 - 紫色圆圈 (高连击)",
-                "障碍物 - 蓝色方块",
-                "空地 - 黑色格子"
+                "蛇头-红色带眼睛",
+                "蛇身-绿色方块",
+                "普通食物-绿圆(+1分)",
+                "特殊食物-黄圆(平方连击)",
+                "稀有食物-紫圆(立方连击)",
+                "障碍物-蓝色方块",
+                "空地-黑色格子"
         };
 
         for (String item : legendItems) {
