@@ -545,7 +545,7 @@ public class BeautifulSnakeGame extends JFrame {
             // 确保焦点
             gamePanel.requestFocus();
 
-            // 创建游戏循环
+            // 创建游戏循环 - 每秒执行4次（250毫秒一次）
             scheduler = Executors.newScheduledThreadPool(1);
             scheduler.scheduleAtFixedRate(() -> {
                 if (!gameLoop.isRunning() || gameLoop.isPaused()) {
@@ -553,13 +553,18 @@ public class BeautifulSnakeGame extends JFrame {
                 }
 
                 SwingUtilities.invokeLater(() -> {
+                    // 执行游戏逻辑
+                    boolean stillRunning = gameLoop.tick();
+                    
+                    // 更新显示
                     updateDisplay();
 
-                    if (ruleEngine.isGameOver()) {
+                    // 检查游戏是否结束
+                    if (!stillRunning || ruleEngine.isGameOver()) {
                         gameOver();
                     }
                 });
-            }, 0, 500, TimeUnit.MILLISECONDS);
+            }, 0, 500, TimeUnit.MILLISECONDS); // 每250毫秒执行一次游戏逻辑
 
             statusLabel.setText("游戏中");
             startButton.setEnabled(false);
@@ -586,6 +591,7 @@ public class BeautifulSnakeGame extends JFrame {
     private void resetGame() {
         if (scheduler != null) {
             scheduler.shutdown();
+            scheduler = null;
         }
 
         initGame();
@@ -637,6 +643,7 @@ public class BeautifulSnakeGame extends JFrame {
     private void gameOver() {
         if (scheduler != null) {
             scheduler.shutdown();
+            scheduler = null;
         }
 
         // 保存游戏记录
