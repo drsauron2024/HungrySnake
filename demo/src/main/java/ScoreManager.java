@@ -35,7 +35,7 @@ public class ScoreManager {
                 break;
         }
         
-        // 输出调试信息（可以去掉）
+        // 输出调试信息
         System.out.println("吃了" + type + "食物，连续" + consecutiveCount + "个，本次得分：" + 
             (type == FoodType.NORMAL ? 1 : 
              type == FoodType.SPECIAL ? consecutiveCount * consecutiveCount : 

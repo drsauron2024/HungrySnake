@@ -15,8 +15,8 @@ public class GameLoop {
     
     private long lastFoodRefreshTime = 0;
     private long lastMapRefreshTime = 0;
-    private final long FOOD_REFRESH_INTERVAL = 10000; // 10秒（原5秒）
-    private final long MAP_REFRESH_INTERVAL = 20000; // 20秒（原10秒）
+    private final long FOOD_REFRESH_INTERVAL = 10000; // 10秒
+    private final long MAP_REFRESH_INTERVAL = 20000; // 20秒
     
     public GameLoop(World world, RuleEngine ruleEngine, ScoreManager scoreManager, 
                     FoodSpawner foodSpawner) {

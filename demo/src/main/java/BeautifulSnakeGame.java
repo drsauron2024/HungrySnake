@@ -97,16 +97,8 @@ public class BeautifulSnakeGame extends JFrame {
     }
 
     private void initUI() {
-        setTitle("🐍 贪吃蛇大作战 🎮");
+        setTitle("贪吃蛇大作战");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-
-        // 设置窗口图标（如果有的话）
-        try {
-            // ImageIcon icon = new ImageIcon("snake_icon.png");
-            // setIconImage(icon.getImage());
-        } catch (Exception e) {
-            // 忽略图标加载错误
-        }
 
         // 设置主布局
         setLayout(new BorderLayout(10, 10));
