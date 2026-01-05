@@ -327,13 +327,17 @@ public class BeautifulSnakeGame extends JFrame {
         itemPanel.setBackground(PANEL_BG);
         itemPanel.setOpaque(false);
 
+        // 亮黄色主题
+        Color TITLE_COLOR = new Color(220, 220, 160);  // 浅黄色标题
+        Color VALUE_COLOR = new Color(255, 255, 100);   // 亮黄色数值
+
         JLabel titleLabel = new JLabel(title);
         titleLabel.setFont(new Font("宋体", Font.PLAIN, 14));
-        titleLabel.setForeground(new Color(180, 180, 200));
+        titleLabel.setForeground(TITLE_COLOR);
 
         JLabel valueLabel = new JLabel(value);
         valueLabel.setFont(new Font("宋体", Font.BOLD, 16));
-        valueLabel.setForeground(Color.WHITE);
+        valueLabel.setForeground(VALUE_COLOR);  // 亮黄色
         valueLabel.setHorizontalAlignment(SwingConstants.RIGHT);
 
         itemPanel.add(titleLabel, BorderLayout.WEST);
@@ -873,23 +877,59 @@ public class BeautifulSnakeGame extends JFrame {
                         g2.setStroke(new BasicStroke(2));
                         g2.drawRoundRect(x + 2, y + 2, CELL_SIZE - 4, CELL_SIZE - 4, 10, 10);
 
-                        // 眼睛（根据方向）
-                        g2.setColor(Color.WHITE);
                         Direction dir = snake.getCurrentDirection();
                         int eyeSize = CELL_SIZE / 5;
+                        int pupilSize = eyeSize / 2;
 
-                        if (dir == Direction.UP || dir == Direction.DOWN) {
-                            g2.fillOval(x + CELL_SIZE/3, y + CELL_SIZE/3, eyeSize, eyeSize);
-                            g2.fillOval(x + 2*CELL_SIZE/3 - eyeSize, y + CELL_SIZE/3, eyeSize, eyeSize);
-                        } else {
-                            g2.fillOval(x + CELL_SIZE/3, y + CELL_SIZE/3, eyeSize, eyeSize);
-                            g2.fillOval(x + CELL_SIZE/3, y + 2*CELL_SIZE/3 - eyeSize, eyeSize, eyeSize);
+// 绘制眼白
+                        g2.setColor(Color.WHITE);
+                        switch (dir) {
+                            case UP:
+                                // 向上看的眼睛
+                                g2.fillOval(x + CELL_SIZE/4, y + CELL_SIZE/4, eyeSize, eyeSize);
+                                g2.fillOval(x + 3*CELL_SIZE/4 - eyeSize, y + CELL_SIZE/4, eyeSize, eyeSize);
+
+                                // 绘制瞳孔（看向上方）
+                                g2.setColor(Color.BLACK);
+                                g2.fillOval(x + CELL_SIZE/4 + eyeSize/4, y + CELL_SIZE/4 + 1, pupilSize, pupilSize);
+                                g2.fillOval(x + 3*CELL_SIZE/4 - eyeSize + eyeSize/4, y + CELL_SIZE/4 + 1, pupilSize, pupilSize);
+                                break;
+
+                            case DOWN:
+                                // 向下看的眼睛
+                                g2.fillOval(x + CELL_SIZE/4, y + 3*CELL_SIZE/4 - eyeSize, eyeSize, eyeSize);
+                                g2.fillOval(x + 3*CELL_SIZE/4 - eyeSize, y + 3*CELL_SIZE/4 - eyeSize, eyeSize, eyeSize);
+
+                                // 绘制瞳孔（看向下方）
+                                g2.setColor(Color.BLACK);
+                                g2.fillOval(x + CELL_SIZE/4 + eyeSize/4, y + 3*CELL_SIZE/4 - eyeSize + eyeSize/2, pupilSize, pupilSize);
+                                g2.fillOval(x + 3*CELL_SIZE/4 - eyeSize + eyeSize/4, y + 3*CELL_SIZE/4 - eyeSize + eyeSize/2, pupilSize, pupilSize);
+                                break;
+
+                            case LEFT:
+                                // 向左看的眼睛
+                                g2.fillOval(x + CELL_SIZE/4, y + CELL_SIZE/4, eyeSize, eyeSize);
+                                g2.fillOval(x + CELL_SIZE/4, y + 3*CELL_SIZE/4 - eyeSize, eyeSize, eyeSize);
+
+                                // 绘制瞳孔（看向左方）
+                                g2.setColor(Color.BLACK);
+                                g2.fillOval(x + CELL_SIZE/4 + 1, y + CELL_SIZE/4 + eyeSize/4, pupilSize, pupilSize);
+                                g2.fillOval(x + CELL_SIZE/4 + 1, y + 3*CELL_SIZE/4 - eyeSize + eyeSize/4, pupilSize, pupilSize);
+                                break;
+
+                            case RIGHT:
+                                // 向右看的眼睛
+                                g2.fillOval(x + 3*CELL_SIZE/4 - eyeSize, y + CELL_SIZE/4, eyeSize, eyeSize);
+                                g2.fillOval(x + 3*CELL_SIZE/4 - eyeSize, y + 3*CELL_SIZE/4 - eyeSize, eyeSize, eyeSize);
+
+                                // 绘制瞳孔（看向右方）
+                                g2.setColor(Color.BLACK);
+                                g2.fillOval(x + 3*CELL_SIZE/4 - eyeSize + eyeSize/2, y + CELL_SIZE/4 + eyeSize/4, pupilSize, pupilSize);
+                                g2.fillOval(x + 3*CELL_SIZE/4 - eyeSize + eyeSize/2, y + 3*CELL_SIZE/4 - eyeSize + eyeSize/4, pupilSize, pupilSize);
+                                break;
                         }
 
-                        // 瞳孔
-                        g2.setColor(Color.BLACK);
-                        g2.fillOval(x + CELL_SIZE/3 + 1, y + CELL_SIZE/3 + 1, eyeSize - 2, eyeSize - 2);
-                        g2.fillOval(x + 2*CELL_SIZE/3 - eyeSize + 1, y + CELL_SIZE/3 + 1, eyeSize - 2, eyeSize - 2);
+
 
                         isHead = false;
                     } else {
