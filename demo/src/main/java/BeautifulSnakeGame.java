@@ -57,8 +57,8 @@ public class BeautifulSnakeGame extends JFrame {
 
     // 游戏设置
     private final int CELL_SIZE = 32;
-    private final int WORLD_WIDTH = 20;
-    private final int WORLD_HEIGHT = 15;
+    private final int WORLD_WIDTH = 30;
+    private final int WORLD_HEIGHT = 20;
 
     // UI组件
     private GamePanel gamePanel;
